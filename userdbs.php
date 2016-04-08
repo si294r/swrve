@@ -31,7 +31,7 @@ function download_file($object) {
 
                 exec("wget --no-check-certificate --output-document=./{$GLOBALS['dir']}/$filename "
                         . "\"$value?api_key={$GLOBALS['api_key']}&personal_key={$GLOBALS['personal_key']}\"");
-                exec("gunzip ./{$GLOBALS['dir']}/$filenamex");
+                exec("gunzip ./{$GLOBALS['dir']}/$filename");
             }
         }
     }
