@@ -1,14 +1,19 @@
 <?php
 
-$api_key = "t8iA8dbYYDbnGBSLWoU";
-$personal_key = "0fT8OKR0aHcscjS48zAU";
+/*
+  
+// key moved to include file
+ 
+$api_key = "...";
+$personal_key = "...";
 
-$content = exec("curl -G -k \"https://dashboard.swrve.com/api/1/userdbs.json?api_key=$api_key&personal_key=$personal_key\"");
+ */
+include "/var/www/swrve_billionaire_key.php";
+
+$url_userdbs_json = "https://dashboard.swrve.com/api/1/userdbs.json";
+
+$content = exec("curl -G -k \"$url_userdbs_json?api_key=$api_key&personal_key=$personal_key\"");
 $json = json_decode($content);
-
-//var_dump($json->data_files);
-//var_dump($json->schemas);
-//var_dump($json->date);
 
 $dir = $json->date;
 if (!is_dir($dir)) {
@@ -30,13 +35,3 @@ function download_file($object) {
 
 download_file($json);
 
-//foreach ($json as $value) {
-//    var_dump($value);
-//}
-
-/*
- * curl -G -k https://dashboard.swrve.com/api/1/userdbs.json?api_key=t8iA8dbYYDbnGBSLWoU&personal_key=0fT8OKR0aHcscjS48zAU 
- * wget --no-check-certificate --directory-prefix=./$dir "https://dashboard.swrve.com/api/1/userdbs/downloads/2016-04-07/all-users_02618_mysql.sql?api_key=t8iA8dbYYDbnGBSLWoU&personal_key=0fT8OKR0aHcscjS48zAU"
- * 
- * 
- */
