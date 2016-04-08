@@ -26,7 +26,10 @@ function download_file($object) {
             download_file($value);
         } else if (is_string($value)) {
             if (strpos($value, "https://") !== FALSE) {
-                exec("wget --no-check-certificate --directory-prefix=./{$GLOBALS['dir']} "
+                $temp = explode("/", $value);
+                $filename = array_pop($temp);
+//                exec("wget --no-check-certificate --directory-prefix=./{$GLOBALS['dir']} "
+                exec("wget --no-check-certificate --output-document=./{$GLOBALS['dir']}/$filename "
                         . "\"$value?api_key={$GLOBALS['api_key']}&personal_key={$GLOBALS['personal_key']}\"");
             }
         }
