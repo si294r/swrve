@@ -1,6 +1,6 @@
 <?php
 
-$db_host = '10.100.8.185';
+$db_host = 'mariadb_server';
 $db_user = 'root';
 $db_pass = 'password';
 $db_name = 'swrve';
@@ -36,11 +36,11 @@ try {
                 . " VALUES ('" . implode("','", $row) . "') "
                 . " ON DUPLICATE KEY UPDATE " . implode(",", $update_columns);
 
-        echo $sql . "\r\n";
+        echo $i . "=" . $row[0] . "\r\n";
         if ($pdo->exec($sql)) {
             
         } else {
-            var_dump($pdo->errorInfo());
+//            var_dump($pdo->errorInfo());
             $error = $pdo->errorInfo()[2];
             if (stripos($error, "column") > 0) {
                 $alter_column = str_replace("Unknown column '", "", $error);
