@@ -15,7 +15,7 @@ $url_userdbs_json = "https://dashboard.swrve.com/api/1/userdbs.json";
 $content = exec("curl -G -k \"$url_userdbs_json?api_key=$api_key&personal_key=$personal_key\"");
 $json = json_decode($content);
 
-$dir = $json->date;
+$dir = "userdbs-".$json->date;
 if (!is_dir($dir)) {
     mkdir($dir);
 }
