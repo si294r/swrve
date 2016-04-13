@@ -46,7 +46,7 @@ foreach ($list_filename as $filename) {
             . "fields terminated by ',' enclosed by '\"' lines "
             . "terminated by '\\n' ignore 1 rows";
     file_put_contents("load_data_$table_name", $sql);
-    exec("mysql --local-infile -h $db_host -u $db_user -p $db_pass < load_data_$table_name ");
+    exec("mysql --local-infile -h $db_host -u $db_user --password=$db_pass < load_data_$table_name ");
     
 //    $pdo->exec($sql);
 
