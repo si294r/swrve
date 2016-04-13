@@ -35,7 +35,7 @@ $db_name = 'swrve';
 $pdo = new PDO("mysql:dbname=$db_name;host=$db_host", $db_user, $db_pass);
 
 $list_filename = get_list_filename();
-print_r($list_filename);
+//print_r($list_filename);
 foreach ($list_filename as $filename) {
     $table_name = get_table_name($filename);
 
@@ -81,6 +81,7 @@ foreach ($list_filename as $filename) {
                             . "('$table_name', '$error')");
                 }
             }
+            break;
         }
         $i++;
     }
