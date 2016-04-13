@@ -33,7 +33,7 @@ $db_name = 'swrve';
  * Main Script
  */
 $pdo = new PDO("mysql:dbname=$db_name;host=$db_host", $db_user, $db_pass);
-//$pdo->exec("SET FOREIGN_KEY_CHECKS=0");
+$pdo->exec("SET FOREIGN_KEY_CHECKS=0");
 
 $list_filename = get_list_filename();
 //print_r($list_filename);
@@ -63,11 +63,13 @@ foreach ($list_filename as $filename) {
                     . " VALUES ('" . implode("','", $row) . "') "
                     . " ON DUPLICATE KEY UPDATE " . implode(",", $update_columns);
 
-            echo $i . "=" . $row[0] . "\r\n";
+            if ($i % 50) {
+                echo $i . "=" . $row[0] . "\r\n";
+            }
             if ($pdo->exec($sql)) {
                 
             } else {
-                var_dump($pdo->errorInfo());
+//                var_dump($pdo->errorInfo());
                 $error = $pdo->errorInfo()[2];
                 if (stripos($error, "column") > 0) {
                     $alter_column = str_replace("Unknown column '", "", $error);
@@ -82,7 +84,7 @@ foreach ($list_filename as $filename) {
                             . "('$table_name', '$error')");
                 }
             }
-            break;
+//            break; // execute one line data
         }
         $i++;
     }
@@ -91,7 +93,7 @@ foreach ($list_filename as $filename) {
     }
     fclose($handle);
 
-    break;
+    break; // execute one file csv
 }
 
 //var_dump($table_name);
