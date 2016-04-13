@@ -33,7 +33,7 @@ $db_name = 'swrve';
  * Main Script
  */
 $pdo = new PDO("mysql:dbname=$db_name;host=$db_host", $db_user, $db_pass);
-$pdo->exec("SET FOREIGN_KEY_CHECKS=0");
+//$pdo->exec("SET FOREIGN_KEY_CHECKS=0");
 
 $list_filename = get_list_filename();
 //print_r($list_filename);
