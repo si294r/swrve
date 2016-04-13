@@ -34,64 +34,70 @@ $db_name = 'swrve';
  */
 $pdo = new PDO("mysql:dbname=$db_name;host=$db_host", $db_user, $db_pass);
 $pdo->exec("SET FOREIGN_KEY_CHECKS=0");
+$pdo->exec("PURGE BINARY LOGS BEFORE NOW()");
 
 $list_filename = get_list_filename();
 //print_r($list_filename);
 foreach ($list_filename as $filename) {
     $table_name = get_table_name($filename);
+    
+    $sql = "load data local infile '$filename' into table $db_name.$table_name "
+            . "fields terminated by ',' enclosed by '\"' lines "
+            . "terminated by '\\n' ignore 1 rows";
+    $pdo->exec($sql);
 
-    $i = 0;
-    $handle = fopen($filename, "r");
-    while (($buffer = fgets($handle, 10 * 1024 * 1024)) !== false) {
-        if ($i == 0) {
-            $columns = explode(",", $buffer);
-            $update_columns = $columns;
-            foreach ($update_columns as $k => $v) {
-                $update_columns[$k] = $v . "=VALUES(" . $v . ")";
-            }
-        } else {
-            $buffer = str_replace(",", ",,", $buffer);
-            $buffer = str_replace("\,,", ",", $buffer);
-            $row = explode(",,", $buffer);
-            foreach ($row as $k => $v) {
-                if ($v == "\\N")
-                    $row[$k] = "NULL";
-                $row[$k] = str_replace("'", "''", $row[$k]);
-                $row[$k] = str_replace("\\", "\\\\", $row[$k]);
-            }
-            $sql = "INSERT INTO $table_name (" . implode(",", $columns) . ") "
-                    . " VALUES ('" . implode("','", $row) . "') "
-                    . " ON DUPLICATE KEY UPDATE " . implode(",", $update_columns);
-
-            if (($i % 100) == 0) {
-                echo $i . "=" . $row[0] . "\r\n";
-            }
-            if ($pdo->exec($sql)) {
-                
-            } else {
-//                var_dump($pdo->errorInfo());
-                $error = $pdo->errorInfo()[2];
-                if (stripos($error, "column") > 0) {
-                    $alter_column = str_replace("Unknown column '", "", $error);
-                    $alter_column = str_replace("' in 'field list'", "", $alter_column);
-                    $sql = "ALTER TABLE  `$table_name` ADD  `$alter_column` VARCHAR( 100 ) NULL DEFAULT NULL ;";
-                    $pdo->exec($sql);
-                    break;
-                } else {
-                    $error = str_replace("'", "''", $error);
-                    $error = str_replace("\\", "\\\\", $error);
-                    $pdo->exec("INSERT INTO error_message (table_name, message) VALUES "
-                            . "('$table_name', '$error')");
-                }
-            }
-//            break; // execute one line data
-        }
-        $i++;
-    }
-    if (!feof($handle)) {
-        echo "Error: unexpected fgets() fail\n";
-    }
-    fclose($handle);
+//    $i = 0;
+//    $handle = fopen($filename, "r");
+//    while (($buffer = fgets($handle, 10 * 1024 * 1024)) !== false) {
+//        if ($i == 0) {
+//            $columns = explode(",", $buffer);
+//            $update_columns = $columns;
+//            foreach ($update_columns as $k => $v) {
+//                $update_columns[$k] = $v . "=VALUES(" . $v . ")";
+//            }
+//        } else {
+//            $buffer = str_replace(",", ",,", $buffer);
+//            $buffer = str_replace("\,,", ",", $buffer);
+//            $row = explode(",,", $buffer);
+//            foreach ($row as $k => $v) {
+//                if ($v == "\\N")
+//                    $row[$k] = "NULL";
+//                $row[$k] = str_replace("'", "''", $row[$k]);
+//                $row[$k] = str_replace("\\", "\\\\", $row[$k]);
+//            }
+//            $sql = "INSERT INTO $table_name (" . implode(",", $columns) . ") "
+//                    . " VALUES ('" . implode("','", $row) . "') "
+//                    . " ON DUPLICATE KEY UPDATE " . implode(",", $update_columns);
+//
+//            if (($i % 100) == 0) {
+//                echo $i . "=" . $row[0] . "\r\n";
+//            }
+//            if ($pdo->exec($sql)) {
+//                
+//            } else {
+////                var_dump($pdo->errorInfo());
+//                $error = $pdo->errorInfo()[2];
+//                if (stripos($error, "column") > 0) {
+//                    $alter_column = str_replace("Unknown column '", "", $error);
+//                    $alter_column = str_replace("' in 'field list'", "", $alter_column);
+//                    $sql = "ALTER TABLE  `$table_name` ADD  `$alter_column` VARCHAR( 100 ) NULL DEFAULT NULL ;";
+//                    $pdo->exec($sql);
+//                    break;
+//                } else {
+//                    $error = str_replace("'", "''", $error);
+//                    $error = str_replace("\\", "\\\\", $error);
+//                    $pdo->exec("INSERT INTO error_message (table_name, message) VALUES "
+//                            . "('$table_name', '$error')");
+//                }
+//            }
+////            break; // execute one line data
+//        }
+//        $i++;
+//    }
+//    if (!feof($handle)) {
+//        echo "Error: unexpected fgets() fail\n";
+//    }
+//    fclose($handle);
 
     break; // execute one file csv
 }
