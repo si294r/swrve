@@ -63,7 +63,7 @@ foreach ($list_filename as $filename) {
                     . " VALUES ('" . implode("','", $row) . "') "
                     . " ON DUPLICATE KEY UPDATE " . implode(",", $update_columns);
 
-            if (($i % 50) == 0) {
+            if (($i % 100) == 0) {
                 echo $i . "=" . $row[0] . "\r\n";
             }
             if ($pdo->exec($sql)) {
