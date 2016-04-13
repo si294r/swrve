@@ -6,6 +6,7 @@ $db_pass = 'password';
 $db_name = 'swrve';
 
 exec("find . -path *userdbs-*.csv", $output); // find all csv
+asort($output);
 print_r($output);
 die;
 
