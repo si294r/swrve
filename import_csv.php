@@ -66,7 +66,7 @@ foreach ($list_filename as $filename) {
             if ($pdo->exec($sql)) {
                 
             } else {
-//            var_dump($pdo->errorInfo());
+                var_dump($pdo->errorInfo());
                 $error = $pdo->errorInfo()[2];
                 if (stripos($error, "column") > 0) {
                     $alter_column = str_replace("Unknown column '", "", $error);
@@ -89,7 +89,7 @@ foreach ($list_filename as $filename) {
         echo "Error: unexpected fgets() fail\n";
     }
     fclose($handle);
-    
+
     break;
 }
 
