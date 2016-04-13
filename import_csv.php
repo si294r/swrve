@@ -7,6 +7,7 @@ $db_name = 'swrve';
 
 exec("find . -path *userdbs-*.csv", $output); // find all csv
 asort($output);
+$output = array_values($output);
 print_r($output);
 die;
 
