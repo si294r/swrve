@@ -5,11 +5,15 @@ $db_user = 'root';
 $db_pass = 'password';
 $db_name = 'swrve';
 
+exec("find . -path *userdbs-*.csv", $output); // find all csv
+print_r($output);
+die;
+
 //$table_name = "swrve_properties";
 //$content = file_get_contents("/var/www/html/all-users_01377_2016-04-05_swrve_properties.1_0.1.csv");
 
 $table_name = "custom_properties";
-$content = file_get_contents("/var/www/html/all-users_01377_2016-04-05_custom_properties.1_0.1.csv");
+$content = file_get_contents("/var/www/html/swrve/userdbs-2016-04-12/all-users_02618_2016-04-12_abtest_exposure.1_0.1.csv");
 
 $array = explode("\n", $content);
 

@@ -12,6 +12,8 @@ include "/var/www/swrve_billionaire_key.php";
 
 $url_userdbs_json = "https://dashboard.swrve.com/api/1/userdbs.json";
 
+exec("rm -r userdbs-*"); // cleanup old download
+
 $content = exec("curl -G -k \"$url_userdbs_json?api_key=$api_key&personal_key=$personal_key\"");
 $json = json_decode($content);
 
