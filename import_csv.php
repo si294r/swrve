@@ -1,20 +1,51 @@
 <?php
 
+/*
+ * Function Definition
+ */
+
+function get_table_name($filename) {
+    $pos = strpos($filename, "_");
+    $pos = strpos($filename, "_", $pos + 1);
+    $pos = strpos($filename, "_", $pos + 1);
+    $pos_dot = strpos($filename, ".", $pos);
+    $table_name = substr($filename, $pos + 1, $pos_dot - $pos - 1);
+    return $table_name;
+}
+
+function get_list_filename() {
+    exec("find . -path *userdbs-*.csv", $output); // find all csv
+    asort($output);
+    $output = array_values($output);
+    return $output;
+}
+
+/*
+ * Configuration
+ */
+
 $db_host = 'mariadb_server';
 $db_user = 'root';
 $db_pass = 'password';
 $db_name = 'swrve';
 
-exec("find . -path *userdbs-*.csv", $output); // find all csv
-asort($output);
-$output = array_values($output);
-print_r($output);
+/*
+ * Main Script
+ */
+$pdo = new PDO("mysql:dbname=$db_name;host=$db_host", $db_user, $db_pass);
+
+$list_filename = get_list_filename();
+foreach ($list_filename as $filename) {
+    $table_name = get_table_name($filename);
+
+    $handle = fopen($filename, "r");
+    
+    break;
+}
+
+var_dump($table_name);
 die;
 
-//$table_name = "swrve_properties";
-//$content = file_get_contents("/var/www/html/all-users_01377_2016-04-05_swrve_properties.1_0.1.csv");
-
-$table_name = "custom_properties";
 $content = file_get_contents("/var/www/html/swrve/userdbs-2016-04-12/all-users_02618_2016-04-12_abtest_exposure.1_0.1.csv");
 
 $array = explode("\n", $content);
@@ -26,7 +57,6 @@ foreach ($update_columns as $k => $v) {
 }
 
 try {
-    $pdo = new PDO("mysql:dbname=$db_name;host=$db_host", $db_user, $db_pass);
 
     for ($i = 1; $i < count($array); $i++) {
         $array[$i] = str_replace(",", ",,", $array[$i]);
