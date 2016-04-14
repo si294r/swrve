@@ -55,7 +55,7 @@ foreach ($list_filename as $filename) {
 mysql --local-infile -h $db_host -u $db_user --password=$db_pass -vve "load data local infile '$filename' into table $db_name.$table_name fields terminated by ',' enclosed by '\"' lines terminated by '\n' ignore 1 rows"
 EOD;
     exec($cmd, $output);
-    print_r($output);
+    echo implode("\n", $output);
     
     
 //    echo $sql;    
