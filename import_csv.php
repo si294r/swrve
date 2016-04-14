@@ -53,7 +53,7 @@ terminated by '\\n' ignore 1 rows
 
     echo $sql;
     if ($pdo->exec($sql)) {
-        
+        print_r($pdo->errorInfo());
     } else {
         $error = $pdo->errorInfo()[2];
         $error = str_replace("'", "''", $error);
