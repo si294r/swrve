@@ -41,7 +41,7 @@ $db_name = 'userdbs';
 // 1. DROP AND CREATE DATABASE
 $output = array();
 exec("mysql -h $db_host -u $db_user --password=$db_pass -vve \"DROP DATABASE IF EXISTS $db_name; CREATE DATABASE $db_name;\"", $output);
-echo implode("\n", $output)."\n";
+echo implode("\n", $output)."\n\n";
 
 // 2. EXECUTE CREATE TABLE SCRIPT
 $file_sql = get_file_sql();
@@ -52,7 +52,7 @@ $file_new_sql = str_replace("mysql.sql", "mysql_new.sql", $file_sql);
 file_put_contents($file_new_sql, $content);
 $output = array();
 exec("mysql -h $db_host -u $db_user --password=$db_pass -vv $db_name < " . $file_new_sql, $output);
-echo implode("\n", $output)."\n";
+echo implode("\n", $output)."\n\n";
 
 // 3. IMPORT CSV
 $list_filename = get_list_filename();
@@ -66,7 +66,7 @@ into table $db_name.$table_name fields terminated by ',' enclosed by '\"' lines 
 EOD;
     $output = array();
     exec($cmd, $output);
-    echo implode("\n", $output);
+    echo implode("\n", $output)."\n\n";
     
 //    break; // execute one file csv
 }
