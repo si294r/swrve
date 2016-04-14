@@ -32,6 +32,9 @@ $db_name = 'swrve';
 /*
  * Main Script
  */
+
+//load data local infile './userdbs-2016-04-12/all-users_02618_2016-04-12_abtest_exposure.1_0.1.csv' into table swrve.abtest_exposure fields terminated by ',' enclosed by '\"' lines terminated by '\n' ignore 1 rows
+        
 //$pdo = new PDO("mysql:dbname=$db_name;host=$db_host", $db_user, $db_pass);
 //$pdo->exec("SET FOREIGN_KEY_CHECKS=0");
 //$pdo->exec("PURGE BINARY LOGS BEFORE NOW()");
@@ -42,13 +45,13 @@ $list_filename = get_list_filename();
 foreach ($list_filename as $filename) {
     $table_name = get_table_name($filename);
     
-    $sql = "load data local infile '$filename' into table $db_name.$table_name "
+    $sql = "load data infile '$filename' into table $db_name.$table_name "
             . "fields terminated by ',' enclosed by '\"' lines "
             . "terminated by '\\n' ignore 1 rows";
-    file_put_contents("load_data_$table_name", $sql);
-    exec("mysql --local-infile -h $db_host -u $db_user --password=$db_pass < load_data_$table_name ");
+//    file_put_contents("load_data_$table_name", $sql);
+//    exec("mysql --local-infile -h $db_host -u $db_user --password=$db_pass < load_data_$table_name ");
     
-//    $pdo->exec($sql);
+    $pdo->exec($sql);
 
 //    $i = 0;
 //    $handle = fopen($filename, "r");
