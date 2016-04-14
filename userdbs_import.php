@@ -44,7 +44,7 @@ echo implode("\n", $output)."\n";
 $file_sql = get_file_sql();
 $content = file_get_contents($file_sql);
 $content = "SET default_storage_engine=MYISAM;\n\n" . $content;
-$content = substr($content, 0, strpos("ALTER TABLE", $content));
+$content = str_replace("ALTER TABLE", "--ALTER TABLE", $content);
 $file_new_sql = str_replace("mysql.sql", "mysql_new.sql", $file_sql);
 file_put_contents($file_new_sql, $content);
 $output = array();
