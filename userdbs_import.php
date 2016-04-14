@@ -37,10 +37,13 @@ $db_name = 'userdbs';
 /*
  * Main Script
  */
+
+// 1. DROP AND CREATE DATABASE
 $output = array();
 exec("mysql -h $db_host -u $db_user --password=$db_pass -vve \"DROP DATABASE IF EXISTS $db_name; CREATE DATABASE $db_name;\"", $output);
 echo implode("\n", $output)."\n";
 
+// 2. EXECUTE CREATE TABLE SCRIPT
 $file_sql = get_file_sql();
 $content = file_get_contents($file_sql);
 $content = "SET default_storage_engine=MYISAM;\n\n" . $content;
@@ -51,21 +54,11 @@ $output = array();
 exec("mysql -h $db_host -u $db_user --password=$db_pass -vv $db_name < " . $file_new_sql, $output);
 echo implode("\n", $output)."\n";
 
-die();
-
+// 3. IMPORT CSV
 $list_filename = get_list_filename();
 //print_r($list_filename);
 foreach ($list_filename as $filename) {
     $table_name = get_table_name($filename);
-
-    if (in_array($table_name, $drop_table)) {
-    $cmd_drop = <<<EOD
-mysql --local-infile -h $db_host -u $db_user --password=$db_pass -vve "drop table $db_name.$table_name"
-EOD;
-        $output = array();
-        exec($cmd_drop);
-        echo implode("\n", $output);
-    }
 
     $cmd = <<<EOD
 mysql --local-infile -h $db_host -u $db_user --password=$db_pass -vve "load data local infile '$filename' 
@@ -75,7 +68,7 @@ EOD;
     exec($cmd, $output);
     echo implode("\n", $output);
     
-    break; // execute one file csv
+//    break; // execute one file csv
 }
 
 
