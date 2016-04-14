@@ -35,10 +35,9 @@ $db_name = 'swrve';
 
 //load data local infile './userdbs-2016-04-12/all-users_02618_2016-04-12_abtest_exposure.1_0.1.csv' into table swrve.abtest_exposure fields terminated by ',' enclosed by '\"' lines terminated by '\n' ignore 1 rows
         
-//$pdo = new PDO("mysql:dbname=$db_name;host=$db_host", $db_user, $db_pass);
-//$pdo->exec("SET FOREIGN_KEY_CHECKS=0");
-//$pdo->exec("PURGE BINARY LOGS BEFORE NOW()");
-//$pdo->setAttribute("PDO::MYSQL_ATTR_LOCAL_INFILE", true);
+$pdo = new PDO("mysql:dbname=$db_name;host=$db_host", $db_user, $db_pass);
+$pdo->exec("SET FOREIGN_KEY_CHECKS=0");
+$pdo->exec("PURGE BINARY LOGS BEFORE NOW()");
 
 $list_filename = get_list_filename();
 //print_r($list_filename);
