@@ -32,7 +32,7 @@ function get_file_sql() {
 $db_host = 'mariadb_server';
 $db_user = 'root';
 $db_pass = 'password';
-$db_name = 'userdbs';
+$db_name = 'userdbs_ios';
 
 /*
  * Main Script
