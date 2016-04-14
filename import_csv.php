@@ -122,7 +122,7 @@ EOD;
 //    }
 //    fclose($handle);
 
-    break; // execute one file csv
+//    break; // execute one file csv
 }
 
 //var_dump($table_name);
