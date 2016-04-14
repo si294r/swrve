@@ -38,9 +38,9 @@ $db_name = 'userdbs_ios';
  * Main Script
  */
 
-// 1. DROP AND CREATE DATABASE
+// 1. CLEAN LOG, DROP AND CREATE DATABASE
 $output = array();
-exec("mysql -h $db_host -u $db_user --password=$db_pass -vve \"DROP DATABASE IF EXISTS $db_name; CREATE DATABASE $db_name;\"", $output);
+exec("mysql -h $db_host -u $db_user --password=$db_pass -vve \"PURGE BINARY LOGS BEFORE NOW(); DROP DATABASE IF EXISTS $db_name; CREATE DATABASE $db_name;\"", $output);
 echo implode("\n", $output)."\n\n";
 
 // 2. EXECUTE CREATE TABLE SCRIPT
