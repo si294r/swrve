@@ -1,5 +1,7 @@
 <?php
 
+$db_name = 'userdbs';
+
 /*
   
 // key moved to include file
@@ -8,16 +10,16 @@ $api_key = "...";
 $personal_key = "...";
 
  */
-include "/var/www/swrve_billionaire_key.php";
+include "/var/www/swrve_{$db_name}_key.php";
 
 $url_userdbs_json = "https://dashboard.swrve.com/api/1/userdbs.json";
 
-exec("rm -r userdbs-*"); // cleanup old download
+exec("rm -r {$db_name}-*"); // cleanup old download
 
 $content = exec("curl -G -k \"$url_userdbs_json?api_key=$api_key&personal_key=$personal_key\"");
 $json = json_decode($content);
 
-$dir = "userdbs-".$json->date;
+$dir = "{$db_name}-".$json->date;
 if (!is_dir($dir)) {
     mkdir($dir);
 }
