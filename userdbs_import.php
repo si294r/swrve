@@ -38,12 +38,12 @@ $db_name = 'userdbs';
  * Main Script
  */
 $output = array();
-exec("mysql -h $db_host -u $db_user --password=$db_pass -vve \"DROP DATABASE $db_name; CREATE DATABASE $db_name;\"", $output);
+exec("mysql -h $db_host -u $db_user --password=$db_pass -vve \"DROP DATABASE IF EXISTS $db_name; CREATE DATABASE $db_name;\"", $output);
 echo implode("\n", $output);
 
 $file_sql = get_file_sql();
 $output = array();
-exec("mysql -h $db_host -u $db_user --password=$db_pass -v $db_name < ", $output);
+exec("mysql -h $db_host -u $db_user --password=$db_pass -v $db_name < " . $file_sql, $output);
 echo implode("\n", $output);
 
 die();
