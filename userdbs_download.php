@@ -1,5 +1,7 @@
 <?php
 
+(php_sapi_name() === "cli") OR exit("Script access is only allowed from command line");
+
 $db_name = 'userdbs';
 
 /*
