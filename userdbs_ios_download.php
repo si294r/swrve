@@ -12,7 +12,7 @@ $api_key = "...";
 $personal_key = "...";
 
  */
-include "/var/www/swrve_{$db_name}_key.php";
+include "/var/www/swrve_billionaire_ios_key.php";
 
 $url_userdbs_json = "https://dashboard.swrve.com/api/1/userdbs.json";
 
