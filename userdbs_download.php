@@ -4,6 +4,8 @@
 
 $db_name = 'userdbs';
 
+include "/var/www/mariadb-config.php";
+
 /*
   
 // key moved to include file
@@ -26,18 +28,29 @@ if (!is_dir($dir)) {
     mkdir($dir);
 }
 
+$pdo = new PDO("mysql:host=$db_host;dbname=swrve_log", $db_user, $db_pass);
+
 function download_file($object) {
     foreach ($object as $value) {
         if (is_object($value) || is_array($value)) {
             download_file($value);
         } else if (is_string($value)) {
             if (strpos($value, "https://") !== FALSE) {
+                $pdo->exec("INSERT IGNORE INTO download_log SET download_url='$value', create_date=NOW()");
                 $temp = explode("/", $value);
                 $filename = array_pop($temp);
-
+                
+                $output = array();
                 exec("wget --no-check-certificate --output-document=./{$GLOBALS['dir']}/$filename "
-                        . "\"$value?api_key={$GLOBALS['api_key']}&personal_key={$GLOBALS['personal_key']}\"");
-                exec("gunzip -k ./{$GLOBALS['dir']}/$filename");
+                        . "\"$value?api_key={$GLOBALS['api_key']}&personal_key={$GLOBALS['personal_key']}\"", $output);
+                $result = str_replace("'", "''", implode("\n", $output));
+                $pdo->exec("UPDATE download_log SET download_result='$result', update_date=NOW() WHERE download_url='$value'");
+                
+                $output = array();
+                exec("gunzip -k ./{$GLOBALS['dir']}/$filename", $output);
+                $result = str_replace("'", "''", implode("\n", $output));
+                $pdo->exec("UPDATE download_log SET gunzip_result='$result', update_date=NOW() WHERE download_url='$value'");
+                die();
             }
         }
     }
