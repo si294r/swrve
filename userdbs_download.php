@@ -31,6 +31,8 @@ if (!is_dir($dir)) {
 $pdo = new PDO("mysql:host=$db_host;dbname=swrve_log", $db_user, $db_pass);
 
 function download_file($object) {
+    global $pdo;
+    
     foreach ($object as $value) {
         if (is_object($value) || is_array($value)) {
             download_file($value);
