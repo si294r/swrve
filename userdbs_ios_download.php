@@ -46,7 +46,7 @@ function download_file($object) {
                         . "--output-document={$GLOBALS['dir']}/$filename "
                         . "\"$value?api_key={$GLOBALS['api_key']}&personal_key={$GLOBALS['personal_key']}\"");
 
-                exec("gunzip -k {$GLOBALS['dir']}/$filename");
+                exec("gunzip -k --verbose {$GLOBALS['dir']}/$filename");
 
                 if (!is_file(str_replace(".csv.gz", ".csv", "{$GLOBALS['dir']}/$filename"))) {
                     goto redownload;
