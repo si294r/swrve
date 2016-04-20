@@ -43,14 +43,16 @@ function download_file($object) {
                 $filename = array_pop($temp);
                 
                 $output = array();
-                exec("wget --no-check-certificate --output-document=./{$GLOBALS['dir']}/$filename "
+                $result = exec("wget --no-check-certificate --output-document=./{$GLOBALS['dir']}/$filename "
                         . "\"$value?api_key={$GLOBALS['api_key']}&personal_key={$GLOBALS['personal_key']}\"", $output);
-                $result = str_replace("'", "''", implode("\n", $output));
+//                $result = str_replace("'", "''", implode("\n", $output));
+                $result = str_replace("'", "''", $result);
                 $pdo->exec("UPDATE download_log SET download_result='$result', update_date=NOW() WHERE download_url='$value'");
                 
                 $output = array();
-                exec("gunzip -k ./{$GLOBALS['dir']}/$filename", $output);
-                $result = str_replace("'", "''", implode("\n", $output));
+                $result = exec("gunzip -k ./{$GLOBALS['dir']}/$filename", $output);
+//                $result = str_replace("'", "''", implode("\n", $output));
+                $result = str_replace("'", "''", $result);
                 $pdo->exec("UPDATE download_log SET gunzip_result='$result', update_date=NOW() WHERE download_url='$value'");
                 die();
             }
