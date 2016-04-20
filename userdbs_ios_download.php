@@ -16,12 +16,12 @@ include "/var/www/swrve_billionaire_ios_key.php";
 
 $url_userdbs_json = "https://dashboard.swrve.com/api/1/userdbs.json";
 
-exec("rm -r {$db_name}-*"); // cleanup old download
+exec("rm -r /var/www/html/swrve/{$db_name}-*"); // cleanup old download
 
 $content = exec("curl -G -k \"$url_userdbs_json?api_key=$api_key&personal_key=$personal_key\"");
 $json = json_decode($content);
 
-$dir = "{$db_name}-" . $json->date;
+$dir = "/var/www/html/swrve/{$db_name}-" . $json->date;
 if (!is_dir($dir)) {
     mkdir($dir);
 }
