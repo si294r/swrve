@@ -38,12 +38,12 @@ function download_file($object) {
 
                 redownload:
                 exec("wget --no-check-certificate --verbose "
-                        . "--output-document=./{$GLOBALS['dir']}/$filename "
+                        . "--output-document=/var/www/html/swrve/{$GLOBALS['dir']}/$filename "
                         . "\"$value?api_key={$GLOBALS['api_key']}&personal_key={$GLOBALS['personal_key']}\"");
 
-                exec("gunzip -k ./{$GLOBALS['dir']}/$filename");
+                exec("gunzip -k /var/www/html/swrve/{$GLOBALS['dir']}/$filename");
 
-                if (!is_file(str_replace(".csv.gz", ".csv", "./{$GLOBALS['dir']}/$filename"))) {
+                if (!is_file(str_replace(".csv.gz", ".csv", "/var/www/html/swrve/{$GLOBALS['dir']}/$filename"))) {
                     goto redownload;
                 }
             }
