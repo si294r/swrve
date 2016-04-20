@@ -7,8 +7,8 @@
  */
 
 function get_table_name($filename) {
-    $pos = strpos($filename, "/");
-    $pos = strpos($filename, "/", $pos + 1);
+    $pos = strrpos($filename, "/");
+//    $pos = strpos($filename, "/", $pos + 1);
     $pos = strpos($filename, "_", $pos + 1);
     $pos = strpos($filename, "_", $pos + 1);
     $pos = strpos($filename, "_", $pos + 1);
