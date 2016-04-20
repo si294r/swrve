@@ -54,6 +54,8 @@ function download_file($object) {
                 
                 $output = array();
                 $result = exec("gunzip -k --verbose ./{$GLOBALS['dir']}/$filename", $output);
+                var_dump($result);
+                var_dump($output);
 //                $result = str_replace("'", "''", implode("\n", $output));
                 $result = str_replace("'", "''", $result);
                 $pdo->exec("UPDATE download_log SET gunzip_result='$result', update_date=NOW() WHERE download_url='$value'");
