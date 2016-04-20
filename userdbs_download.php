@@ -43,9 +43,11 @@ function download_file($object) {
                 $filename = array_pop($temp);
                 
                 $output = array();
-                $result = exec("wget --no-check-certificate --output-file=./download_log "
+                $result = exec("wget --no-check-certificate "
                         . "--output-document=./{$GLOBALS['dir']}/$filename "
                         . "\"$value?api_key={$GLOBALS['api_key']}&personal_key={$GLOBALS['personal_key']}\"", $output);
+                var_dump($result);
+                var_dump($output);
 //                $result = str_replace("'", "''", implode("\n", $output));
                 $result = str_replace("'", "''", $result);
                 $pdo->exec("UPDATE download_log SET download_result='$result', update_date=NOW() WHERE download_url='$value'");
