@@ -43,7 +43,7 @@ function download_file($object) {
                 $filename = array_pop($temp);
                 
                 $output = array();
-                $result = system("wget --no-check-certificate "
+                $result = system("wget --no-check-certificate --no-verbose "
                         . "--output-document=./{$GLOBALS['dir']}/$filename "
                         . "\"$value?api_key={$GLOBALS['api_key']}&personal_key={$GLOBALS['personal_key']}\"", $output);
                 var_dump($result);
