@@ -109,7 +109,7 @@ CREDENTIALS 'aws_access_key_id={$aws_access_key_id};aws_secret_access_key={$aws_
 DELIMITER ',' IGNOREHEADER 1 ESCAPE GZIP;"
 EOD;
     $output = array();
-    exec($cmd, $output);
+    exec($pcmd, $output);
     echo implode("\n", $output) . "\n\n";
     
 //    break; // execute one file csv
