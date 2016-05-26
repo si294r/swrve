@@ -50,7 +50,7 @@ include "/var/www/redshift-config.php";
 /*
  * Main Script
  */
-goto testing;
+//goto testing;
 // 1. CLEAN LOG, DROP AND CREATE DATABASE
 $output = array();
 exec("mysql -h $db_host -u $db_user --password=$db_pass -vve \"PURGE BINARY LOGS BEFORE NOW(); DROP DATABASE IF EXISTS $db_name; CREATE DATABASE $db_name;\"", $output);
@@ -67,7 +67,7 @@ $output = array();
 exec("mysql -h $db_host -u $db_user --password=$db_pass -vv $db_name < " . $file_new_sql, $output);
 echo implode("\n", $output) . "\n\n";
 
-testing:
+//testing:
 // 2.2. DROP TABLE, CREATE TABLE SCRIPT REDSHIFT
 $file_psql = get_file_psql();
 $content = file_get_contents($file_psql);
@@ -92,7 +92,7 @@ $list_filename = get_list_filename();
 foreach ($list_filename as $filename) {
     $table_name = get_table_name($filename);
 
-    goto psql;
+//    goto psql;
     $cmd = <<<EOD
 mysql --local-infile -h $db_host -u $db_user --password=$db_pass -vve "load data local infile '$filename' 
 into table $db_name.$table_name fields terminated by ',' enclosed by '\"' lines terminated by '\n' ignore 1 rows"
@@ -101,7 +101,7 @@ EOD;
     exec($cmd, $output);
     echo implode("\n", $output) . "\n\n";
 
-    psql:
+//    psql:
     $temp = explode("/", $filename);
     $filename = array_pop($temp);
     $pcmd = "psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"COPY {$table_name}_android FROM 's3://user-db/android/{$filename}.gz' CREDENTIALS 'aws_access_key_id={$aws_access_key_id};aws_secret_access_key={$aws_secret_access_key}' DELIMITER ',' IGNOREHEADER 1 ESCAPE GZIP;\"";
