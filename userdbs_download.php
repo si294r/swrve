@@ -52,8 +52,8 @@ function download_file($object) {
                     goto redownload;
                 }
                 
-                echo "s3cmd put $filename s3://userdb/android/$filename\n";
-                exec("s3cmd put $filename s3://userdb/android/$filename");
+//                echo "s3cmd put $filename s3://userdb/android/$filename\n";
+                exec("s3cmd put {$GLOBALS['dir']}/$filename s3://userdb/android/$filename");
             }
         }
     }
