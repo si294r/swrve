@@ -82,9 +82,9 @@ foreach ($arr_content as $k=>$value) {
 }
 $file_new_psql = str_replace("redshift.sql", "redshift_new.sql", $file_psql);
 file_put_contents($file_new_psql, implode("\n", $arr_content));
+$output = array();
 exec("psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase < " . $file_new_psql, $output);
 echo implode("\n", $output) . "\n\n";
-die;
 
 // 3. IMPORT CSV
 $list_filename = get_list_filename();
@@ -92,6 +92,7 @@ $list_filename = get_list_filename();
 foreach ($list_filename as $filename) {
     $table_name = get_table_name($filename);
 
+    goto psql;
     $cmd = <<<EOD
 mysql --local-infile -h $db_host -u $db_user --password=$db_pass -vve "load data local infile '$filename' 
 into table $db_name.$table_name fields terminated by ',' enclosed by '\"' lines terminated by '\n' ignore 1 rows"
@@ -100,6 +101,17 @@ EOD;
     exec($cmd, $output);
     echo implode("\n", $output) . "\n\n";
 
+    psql:
+    $pcmd = <<<EOD
+psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  
+-c "COPY {$table_name}_android FROM 's3://user-db/android/{$filename}.gz'
+CREDENTIALS 'aws_access_key_id={$aws_access_key_id};aws_secret_access_key={$aws_secret_access_key}'
+DELIMITER ',' IGNOREHEADER 1 ESCAPE GZIP;"
+EOD;
+    $output = array();
+    exec($cmd, $output);
+    echo implode("\n", $output) . "\n\n";
+    
 //    break; // execute one file csv
 }
 
