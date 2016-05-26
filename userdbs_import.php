@@ -71,6 +71,7 @@ testing:
 // 2.2. DROP TABLE, CREATE TABLE SCRIPT REDSHIFT
 $file_psql = get_file_psql();
 $content = file_get_contents($file_psql);
+$content = str_replace("DOUBLE", "DOUBLE PRECISION", $content);
 $arr_content = explode("\n", $content);
 foreach ($arr_content as $k=>$value) {
     if (strpos($value, "CREATE TABLE") !== FALSE) {
