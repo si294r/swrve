@@ -51,6 +51,8 @@ function download_file($object) {
                 if (!is_file(str_replace(".csv.gz", ".csv", "{$GLOBALS['dir']}/$filename"))) {
                     goto redownload;
                 }
+                
+                exec("s3cmd put $filename s3://userdb/ios/$filename");
             }
         }
     }
