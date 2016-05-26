@@ -24,6 +24,7 @@ if (!is_object($json)) {
     goto getjson;
 } else {
     exec("rm -r /var/www/html/swrve/{$db_name}-*"); // cleanup old download
+    exec("s3cmd --recursive del s3://user-db/ios");
 }
 
 $dir = "/var/www/html/swrve/{$db_name}-" . $json->date;
