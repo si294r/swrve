@@ -73,7 +73,7 @@ $file_psql = get_file_psql();
 $content = file_get_contents($file_psql);
 $content = str_replace("DOUBLE", "DOUBLE PRECISION", $content);
 $arr_content = explode("\n", $content);
-foreach ($arr_content as $k=>$value) {
+foreach ($arr_content as $k => $value) {
     if (strpos($value, "CREATE TABLE") !== FALSE) {
         $temp = str_replace(" (", "_android (", $value);
         $temp = str_replace(" (", ";", str_replace("CREATE TABLE", "DROP TABLE IF EXISTS", $temp)) . "\n" . $temp;
@@ -102,11 +102,13 @@ EOD;
     echo implode("\n", $output) . "\n\n";
 
     psql:
+    $temp = explode("/", $filename);
+    $filename = array_pop($temp);
     $pcmd = "psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"COPY {$table_name}_android FROM 's3://user-db/android/{$filename}.gz' CREDENTIALS 'aws_access_key_id={$aws_access_key_id};aws_secret_access_key={$aws_secret_access_key}' DELIMITER ',' IGNOREHEADER 1 ESCAPE GZIP;\"";
     $output = array();
     exec($pcmd, $output);
     echo implode("\n", $output) . "\n\n";
-    
+
 //    break; // execute one file csv
 }
 
