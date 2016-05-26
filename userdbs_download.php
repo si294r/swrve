@@ -52,8 +52,7 @@ function download_file($object) {
                     goto redownload;
                 }
                 
-                echo "s3cmd --config=/root/.s3cfg put {$GLOBALS['dir']}/$filename s3://userdb/android/$filename\n";
-                exec("s3cmd --config=/root/.s3cfg put {$GLOBALS['dir']}/$filename s3://userdb/android/$filename");
+                exec("s3cmd put {$GLOBALS['dir']}/$filename s3://user-db/android/$filename");
             }
         }
     }
