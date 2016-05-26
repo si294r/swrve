@@ -81,7 +81,7 @@ foreach ($arr_content as $k=>$value) {
 }
 $file_new_psql = str_replace("redshift.sql", "redshift_new.sql", $file_psql);
 file_put_contents($file_new_psql, implode("\n", $arr_content));
-exec("psql --host=$rhost --port=$rport --username=$ruser --no-password $rdatabase < " . $file_new_psql, $output);
+exec("psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase < " . $file_new_psql, $output);
 echo implode("\n", $output) . "\n\n";
 die;
 
