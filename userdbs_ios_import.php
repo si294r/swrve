@@ -93,13 +93,14 @@ foreach ($list_filename as $filename) {
     $table_name = get_table_name($filename);
 
 //    goto psql;
-    $cmd = <<<EOD
-mysql --local-infile -h $db_host -u $db_user --password=$db_pass -vve "load data local infile '$filename' 
-into table $db_name.$table_name fields terminated by ',' enclosed by '\"' lines terminated by '\n' ignore 1 rows"
-EOD;
-    $output = array();
-    exec($cmd, $output);
-    echo implode("\n", $output)."\n\n";
+    // disable mysql - 20150615
+//    $cmd = <<<EOD
+//mysql --local-infile -h $db_host -u $db_user --password=$db_pass -vve "load data local infile '$filename' 
+//into table $db_name.$table_name fields terminated by ',' enclosed by '\"' lines terminated by '\n' ignore 1 rows"
+//EOD;
+//    $output = array();
+//    exec($cmd, $output);
+//    echo implode("\n", $output)."\n\n";
     
 //    psql:
     $temp = explode("/", $filename);
