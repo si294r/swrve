@@ -18,19 +18,19 @@ function get_table_name($filename) {
 }
 
 function get_list_filename() {
-    exec("find /var/www/html/swrve -path *{$GLOBALS['db_name']}-*.csv", $output); // find all csv
+    exec("find /var/www/html/swrve -path */{$GLOBALS['db_name']}-*.csv", $output); // find all csv
     asort($output);
     $output = array_values($output);
     return $output;
 }
 
 function get_file_sql() {
-    exec("find /var/www/html/swrve -path *{$GLOBALS['db_name']}-*mysql.sql", $output); // find all csv
+    exec("find /var/www/html/swrve -path */{$GLOBALS['db_name']}-*mysql.sql", $output); // find all csv
     return $output[0];
 }
 
 function get_file_psql() {
-    exec("find /var/www/html/swrve -path *{$GLOBALS['db_name']}-*redshift.sql", $output); // find all csv
+    exec("find /var/www/html/swrve -path */{$GLOBALS['db_name']}-*redshift.sql", $output); // find all csv
     return $output[0];
 }
 
