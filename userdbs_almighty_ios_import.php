@@ -109,7 +109,11 @@ foreach ($list_filename as $filename) {
     $output = array();
     exec($pcmd, $output);
     echo implode("\n", $output) . "\n\n";
-
+    
+    $text = str_replace("\"", "", implode("\n", $output) . "\n\n");
+    $ses_cmd = "aws ses send-email --from heru@alegrium.com --to heru@alegrium.com --subject \"Result $filename\"  --text \"$text\"";
+    exec($ses_cmd);
+    
 //    break; // execute one file csv
 }
 
