@@ -89,6 +89,7 @@ echo implode("\n", $output) . "\n\n";
 // 3. IMPORT CSV
 $list_filename = get_list_filename();
 //print_r($list_filename);
+$text = "";
 foreach ($list_filename as $filename) {
     $table_name = get_table_name($filename);
 
@@ -110,11 +111,11 @@ foreach ($list_filename as $filename) {
     exec($pcmd, $output);
     echo implode("\n", $output) . "\n\n";
     
-    $text = str_replace("\"", "", implode("\n", $output) . "\n\n");
-    $ses_cmd = "aws ses send-email --from heru@alegrium.com --to heru@alegrium.com --subject \"Result $filename\"  --text \"$text\"";
-    exec($ses_cmd);
+    $text = $text . str_replace("\"", "", implode("\n", $output) . "\n\n\n\n");
     
 //    break; // execute one file csv
 }
 
+$ses_cmd = "aws ses send-email --from heru@alegrium.com --to heru@alegrium.com --subject \"Swrve Almighty 1.5 Result Import\"  --text \"$text\"";
+exec($ses_cmd);
 
