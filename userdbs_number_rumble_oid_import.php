@@ -116,6 +116,6 @@ foreach ($list_filename as $filename) {
 //    break; // execute one file csv
 }
 
-$ses_cmd = "aws ses send-email --from heru@alegrium.com --to heru@alegrium.com --subject \"Swrve Number Rumble iOS Result Import\"  --text \"$text\"";
+$ses_cmd = "aws ses send-email --from heru@alegrium.com --to heru@alegrium.com --subject \"Swrve Number Rumble Android Result Import\"  --text \"$text\"";
 exec($ses_cmd);
 
