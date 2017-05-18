@@ -52,20 +52,20 @@ include "/var/www/redshift-config2.php";
  */
 //goto testing;
 // 1. CLEAN LOG, DROP AND CREATE DATABASE
-$output = array();
-exec("mysql -h $db_host -u $db_user --password=$db_pass -vve \"PURGE BINARY LOGS BEFORE NOW(); DROP DATABASE IF EXISTS $db_name; CREATE DATABASE $db_name;\"", $output);
-echo implode("\n", $output) . "\n\n";
+//$output = array();
+//exec("mysql -h $db_host -u $db_user --password=$db_pass -vve \"PURGE BINARY LOGS BEFORE NOW(); DROP DATABASE IF EXISTS $db_name; CREATE DATABASE $db_name;\"", $output);
+//echo implode("\n", $output) . "\n\n";
 
 // 2.1. EXECUTE CREATE TABLE SCRIPT
-$file_sql = get_file_sql();
-$content = file_get_contents($file_sql);
-$content = "SET default_storage_engine=MYISAM;\n\n" . $content;
-$content = substr($content, 0, strpos($content, "ALTER TABLE"));
-$file_new_sql = str_replace("mysql.sql", "mysql_new.sql", $file_sql);
-file_put_contents($file_new_sql, $content);
-$output = array();
-exec("mysql -h $db_host -u $db_user --password=$db_pass -vv $db_name < " . $file_new_sql, $output);
-echo implode("\n", $output) . "\n\n";
+//$file_sql = get_file_sql();
+//$content = file_get_contents($file_sql);
+//$content = "SET default_storage_engine=MYISAM;\n\n" . $content;
+//$content = substr($content, 0, strpos($content, "ALTER TABLE"));
+//$file_new_sql = str_replace("mysql.sql", "mysql_new.sql", $file_sql);
+//file_put_contents($file_new_sql, $content);
+//$output = array();
+//exec("mysql -h $db_host -u $db_user --password=$db_pass -vv $db_name < " . $file_new_sql, $output);
+//echo implode("\n", $output) . "\n\n";
 
 //testing:
 // 2.2. DROP TABLE, CREATE TABLE SCRIPT REDSHIFT
