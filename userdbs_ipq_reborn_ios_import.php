@@ -75,7 +75,7 @@ $content = str_replace("DOUBLE", "DOUBLE PRECISION", $content);
 $arr_content = explode("\n", $content);
 foreach ($arr_content as $k => $value) {
     if (strpos($value, "CREATE TABLE") !== FALSE) {
-        $temp = str_replace(" (", "_number_rumble_ios (", $value);
+        $temp = str_replace(" (", "_ipq_reborn_ios (", $value);
         $temp = str_replace(" (", ";", str_replace("CREATE TABLE", "DROP TABLE IF EXISTS", $temp)) . "\n" . $temp;
         $arr_content[$k] = $temp;
     }
