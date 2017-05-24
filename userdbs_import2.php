@@ -104,12 +104,12 @@ foreach ($list_filename as $filename) {
 
     // disable insert table android - 20160615
 //    psql: 
-//    $temp = explode("/", $filename);
-//    $filename = array_pop($temp);
-//    $pcmd = "psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"COPY {$table_name}_android FROM 's3://user-db/android/{$filename}.gz' CREDENTIALS 'aws_access_key_id={$aws_access_key_id};aws_secret_access_key={$aws_secret_access_key}' DELIMITER ',' IGNOREHEADER 1 ESCAPE GZIP;\"";
-//    $output = array();
-//    exec($pcmd, $output);
-//    echo implode("\n", $output) . "\n\n";
+    $temp = explode("/", $filename);
+    $filename = array_pop($temp);
+    $pcmd = "psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"COPY {$table_name}_android FROM 's3://user-db/android/{$filename}.gz' CREDENTIALS 'aws_access_key_id={$aws_access_key_id};aws_secret_access_key={$aws_secret_access_key}' DELIMITER ',' IGNOREHEADER 1 ESCAPE GZIP;\"";
+    $output = array();
+    exec($pcmd, $output);
+    echo implode("\n", $output) . "\n\n";
 
 //    break; // execute one file csv
 }
