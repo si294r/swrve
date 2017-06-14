@@ -19,3 +19,8 @@ $config['Billionaire_Android']['db_name'] = "userdbs";
 $config['Billionaire_Android']['file_key_php'] = "swrve_billionaire_key.php";
 $config['Billionaire_Android']['folder_s3'] = "android";
 $config['Billionaire_Android']['table_suffix'] = "_android";
+
+$config['Billionaire_iOS']['db_name'] = "userdbs_ios";
+$config['Billionaire_iOS']['file_key_php'] = "swrve_billionaire_ios_key.php";
+$config['Billionaire_iOS']['folder_s3'] = "ios";
+$config['Billionaire_iOS']['table_suffix'] = "_ios";
