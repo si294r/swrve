@@ -4,7 +4,10 @@ function load_config()
 {
     global $argv, $db_name, $file_key_php, $folder_s3, $table_suffix, $email_subject, $config;
 
-    list($db_name, $file_key_php, $folder_s3, $table_suffix) = $config[$argv[1]];
+    $db_name      = $config[$argv[1]]['db_name'];
+    $file_key_php = $config[$argv[1]]['file_key_php'];
+    $folder_s3    = $config[$argv[1]]['folder_s3'];
+    $table_suffix = $config[$argv[1]]['table_suffix'];
     
     $email_subject = "Swrve " . str_replace("_", " ", $argv[1]) . " Result Import";
 }
