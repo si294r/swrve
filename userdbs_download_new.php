@@ -27,6 +27,8 @@ if (!is_dir($dir)) {
 
 function download_file($object) {
     
+    global $folder_s3;
+    
     foreach ($object as $value) {
         if (is_object($value) || is_array($value)) {
             download_file($value);
