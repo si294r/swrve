@@ -59,3 +59,8 @@ $config['IPQ_Reborn_iOS']['db_name'] = "ipq_reborn_userdbs_ios";
 $config['IPQ_Reborn_iOS']['file_key_php'] = "swrve_ipq_reborn_ios_key.php";
 $config['IPQ_Reborn_iOS']['folder_s3'] = "ipq_reborn_ios";
 $config['IPQ_Reborn_iOS']['table_suffix'] = "_ipq_reborn_ios";
+
+$config['IPQ_Reborn_Android']['db_name'] = "ipq_reborn_userdbs_oid";
+$config['IPQ_Reborn_Android']['file_key_php'] = "swrve_ipq_reborn_oid_key.php";
+$config['IPQ_Reborn_Android']['folder_s3'] = "ipq_reborn_oid";
+$config['IPQ_Reborn_Android']['table_suffix'] = "_ipq_reborn_oid";
