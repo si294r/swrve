@@ -74,3 +74,8 @@ $config['Billionaire2_iOS']['db_name'] = "billionaire2_userdbs_ios";
 $config['Billionaire2_iOS']['file_key_php'] = "swrve_billionaire2_ios_key.php";
 $config['Billionaire2_iOS']['folder_s3'] = "billionaire2_ios";
 $config['Billionaire2_iOS']['table_suffix'] = "_billionaire2_ios";
+
+$config['Cash_Android']['db_name'] = "cash_userdbs_oid";
+$config['Cash_Android']['file_key_php'] = "swrve_cash_oid_key.php";
+$config['Cash_Android']['folder_s3'] = "cash_oid";
+$config['Cash_Android']['table_suffix'] = "_cash_oid";
