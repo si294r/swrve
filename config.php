@@ -79,3 +79,8 @@ $config['Cash_Android']['db_name'] = "cash_userdbs_oid";
 $config['Cash_Android']['file_key_php'] = "swrve_cash_oid_key.php";
 $config['Cash_Android']['folder_s3'] = "cash_oid";
 $config['Cash_Android']['table_suffix'] = "_cash_oid";
+
+$config['Wheels_iOS']['db_name'] = "wheels_userdbs_ios";
+$config['Wheels_iOS']['file_key_php'] = "swrve_wheels_ios_key.php";
+$config['Wheels_iOS']['folder_s3'] = "wheels_ios";
+$config['Wheels_iOS']['table_suffix'] = "_wheels_ios";
