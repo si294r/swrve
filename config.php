@@ -84,3 +84,8 @@ $config['Wheels_iOS']['db_name'] = "wheels_userdbs_ios";
 $config['Wheels_iOS']['file_key_php'] = "swrve_wheels_ios_key.php";
 $config['Wheels_iOS']['folder_s3'] = "wheels_ios";
 $config['Wheels_iOS']['table_suffix'] = "_wheels_ios";
+
+$config['STB_iOS']['db_name'] = "stb_userdbs_ios";
+$config['STB_iOS']['file_key_php'] = "swrve_stb_ios_key.php";
+$config['STB_iOS']['folder_s3'] = "stb_ios";
+$config['STB_iOS']['table_suffix'] = "_stb_ios";
