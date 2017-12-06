@@ -44,12 +44,12 @@ load_config();
 $file_psql = get_file_psql();
 $content = file_get_contents($file_psql);
 $content = str_replace("DOUBLE", "DOUBLE PRECISION", $content);
+$content = str_replace("distkey", "", $content);
 $arr_content = explode("\n", $content);
 foreach ($arr_content as $k => $value) {
     if (strpos($value, "CREATE TABLE") !== FALSE) {
         $temp = str_replace(" (", "$table_suffix (", $value);
         $temp = str_replace(" (", ";", str_replace("CREATE TABLE", "DROP TABLE IF EXISTS", $temp)) . "\n" . $temp;
-        $temp = str_replace("distkey", "", $temp);
         $arr_content[$k] = $temp;
     }
 }
