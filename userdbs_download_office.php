@@ -55,5 +55,5 @@ function download_file($object) {
 
 download_file($json);
 
-exec("aws s3 cp --recursive {$GLOBALS['dir']}/ s3://user-db/office/$folder_s3/");
+//exec("aws s3 cp --recursive {$GLOBALS['dir']}/ s3://user-db/office/$folder_s3/");
 
