@@ -49,6 +49,7 @@ foreach ($arr_content as $k => $value) {
     if (strpos($value, "CREATE TABLE") !== FALSE) {
         $temp = str_replace(" (", "$table_suffix (", $value);
         $temp = str_replace(" (", ";", str_replace("CREATE TABLE", "DROP TABLE IF EXISTS", $temp)) . "\n" . $temp;
+        $temp = str_replace("distkey", "", $temp);
         $arr_content[$k] = $temp;
     }
 }
