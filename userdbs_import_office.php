@@ -81,6 +81,6 @@ foreach ($list_filename as $filename) {
 //    break; // execute one file csv
 }
 
-$ses_cmd = "aws ses send-email --from $email_from --to $email_to --subject \"$email_subject\"  --text \"$text\"";
-exec($ses_cmd);
+//$ses_cmd = "aws ses send-email --from $email_from --to $email_to --subject \"$email_subject\"  --text \"$text\"";
+//exec($ses_cmd);
 
