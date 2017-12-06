@@ -17,7 +17,7 @@ if (!is_object($json)) {
     goto getjson;
 } else {
     exec("rm -r /home/alegrium/www/swrve/{$db_name}-*"); // cleanup old download
-    exec("s3cmd --recursive del s3://user-db/office/$folder_s3");
+    exec("aws s3 rm --recursive s3://user-db/office/$folder_s3");
 }
 
 $dir = "/home/alegrium/www/swrve/{$db_name}-" . $json->date;
@@ -48,11 +48,12 @@ function download_file($object) {
                     goto redownload;
                 }
                 
-                exec("aws s3 cp {$GLOBALS['dir']}/$filename s3://user-db/office/$folder_s3/$filename");
             }
         }
     }
 }
 
 download_file($json);
+
+exec("aws s3 cp --recursive {$GLOBALS['dir']}/ s3://user-db/office/$folder_s3/");
 
