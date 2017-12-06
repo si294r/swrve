@@ -68,10 +68,14 @@ $text = "";
 foreach ($list_filename as $filename) {
     $table_name = get_table_name($filename);
 
+    $csv_content = file_get_contents($filename);
+    $csv_content = preg_replace('/,([^,]+)\\\\,([^,]+),/', ',"$1,$2",', $csv_content);
+    file_put_contents($filename, $csv_content);
+    
 //    $temp = explode("/", $filename);
 //    $filename = array_pop($temp);
 //    $pcmd = "psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"COPY {$table_name}{$table_suffix} FROM 's3://user-db/{$folder_s3}/{$filename}.gz' CREDENTIALS 'aws_access_key_id={$aws_access_key_id};aws_secret_access_key={$aws_secret_access_key}' DELIMITER ',' IGNOREHEADER 1 MAXERROR 100 ESCAPE GZIP ;\"";
-    $pcmd = "psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"\\COPY {$table_name}{$table_suffix} FROM '$filename' DELIMITER ',' NULL '\\N' ESCAPE '\\' CSV HEADER ;\"";
+    $pcmd = "psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"\\COPY {$table_name}{$table_suffix} FROM '$filename' DELIMITER ',' NULL '\\N' QUOTE E'\\\"' CSV HEADER ;\"";
     $output = array();
     exec($pcmd, $output);
     echo implode("\n", $output) . "\n\n";
