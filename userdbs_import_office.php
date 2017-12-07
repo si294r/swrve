@@ -84,7 +84,11 @@ foreach ($list_filename as $filename) {
             } 
             $matches[$k] = $value[1];
         }
-        $arr_csv[$k_row] = implode(",", $matches);
+        $csv_row = implode(",", $matches);
+        if ($csv_row == "\\N") { // last row must be empty string
+            $csv_row = "";
+        }
+        $arr_csv[$k_row] = $csv_row;
     }
     $csv_content = implode(PHP_EOL, $arr_csv);
 
