@@ -79,6 +79,9 @@ foreach ($list_filename as $filename) {
             if (strpos($value[1], "\\,") !== FALSE || strpos($value[1], "\"") !== FALSE) {
                 $value[1] = "\"".str_replace(["\\,", "\""], [",", "\\\""], $value[1])."\"";
             }
+            if ($value[1] == "") {
+                $value[1] = "\\N";
+            } 
             $matches[$k] = $value[1];
         }
         $arr_csv[$k_row] = implode(",", $matches);
