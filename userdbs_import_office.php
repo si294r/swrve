@@ -69,13 +69,30 @@ foreach ($list_filename as $filename) {
     $table_name = get_table_name($filename);
 
     $csv_content = file_get_contents($filename);
-    $csv_content = preg_replace('/,([^,]+)\\\\,([^,]+),/', ',"$1,$2",', $csv_content);
+    
+    $arr_csv = explode(PHP_EOL, $csv_content);
+    $re = '/(?<=^|,)(((?<=\\\\),|[^,|])*)(?:$|,)/';
+    foreach ($arr_csv as $k_row=>$csv_row) {
+        $matches = [];
+        preg_match_all($re, $csv_row, $matches, PREG_SET_ORDER, 0);
+        foreach ($matches as $k=>$value) {
+            if (strpos($value[1], "\\,") !== FALSE || strpos($value[1], "\"") !== FALSE) {
+                $value[1] = str_replace(["\\,", "\""], [",", "\\\""], $value[1]);
+            }
+            $matches[$k] = $value[1];
+        }
+        $arr_csv[$k_row] = implode(",", $matches);
+    }
+    $csv_content = implode(PHP_EOL, $arr_csv);
+
+//    $csv_content = preg_replace('/,([^,]+)\\\\,([^,]+),/', ',"$1,$2",', $csv_content);
+//    $csv_content = preg_replace('/,([^,]+)\\\\,([^,]+),/', ',"$1,$2",', $csv_content);
     file_put_contents($filename, $csv_content);
     
 //    $temp = explode("/", $filename);
 //    $filename = array_pop($temp);
 //    $pcmd = "psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"COPY {$table_name}{$table_suffix} FROM 's3://user-db/{$folder_s3}/{$filename}.gz' CREDENTIALS 'aws_access_key_id={$aws_access_key_id};aws_secret_access_key={$aws_secret_access_key}' DELIMITER ',' IGNOREHEADER 1 MAXERROR 100 ESCAPE GZIP ;\"";
-    $pcmd = "psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"\\COPY {$table_name}{$table_suffix} FROM '$filename' DELIMITER ',' NULL '\\N' QUOTE E'\\\"' CSV HEADER ;\"";
+    $pcmd = "psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"\\COPY {$table_name}{$table_suffix} FROM '$filename' DELIMITER ',' NULL '\\N' QUOTE '\\\"' CSV HEADER ;\"";
     $output = array();
     exec($pcmd, $output);
     echo implode("\n", $output) . "\n\n";
