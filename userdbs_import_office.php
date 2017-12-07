@@ -77,7 +77,7 @@ foreach ($list_filename as $filename) {
         preg_match_all($re, $csv_row, $matches, PREG_SET_ORDER, 0);
         foreach ($matches as $k=>$value) {
             if (strpos($value[1], "\\,") !== FALSE || strpos($value[1], "\"") !== FALSE) {
-                $value[1] = str_replace(["\\,", "\""], [",", "\\\""], $value[1]);
+                $value[1] = "\"".str_replace(["\\,", "\""], [",", "\\\""], $value[1])."\"";
             }
             $matches[$k] = $value[1];
         }
