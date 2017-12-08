@@ -91,7 +91,7 @@ foreach ($list_filename as $filename) {
             $csv_row = $previous_row . " " . $csv_row;
 //            $csv_row = str_replace(["\r","\n"], ["",""], $csv_row);
         }
-        echo  $csv_row . PHP_EOL;
+//        echo  $csv_row . PHP_EOL;
         preg_match_all($re, $csv_row, $matches, PREG_SET_ORDER, 0);
         if ($k_row == 0) {
             $total_column = count($matches);
