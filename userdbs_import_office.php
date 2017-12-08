@@ -67,6 +67,8 @@ $list_filename = get_list_filename();
 $text = "";
 foreach ($list_filename as $filename) {
     $table_name = get_table_name($filename);
+    
+    if ($table_name != "swrve_properties_cash_oid") continue;
 
     /*
      * Start Transform CSV from Standard Redshift to Standard Postgres
