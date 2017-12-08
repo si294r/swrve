@@ -68,7 +68,7 @@ $text = "";
 foreach ($list_filename as $filename) {
     $table_name = get_table_name($filename);
     
-    if ($table_name != "swrve_properties") continue;
+//    if ($table_name != "swrve_properties") continue; // for debuging purpose
 
     /*
      * Start Transform CSV from Standard Redshift to Standard Postgres
@@ -114,15 +114,11 @@ foreach ($list_filename as $filename) {
             $matches[$k] = $value[1];
         }
         $csv_row = implode(",", $matches);
-//        if ($csv_row == "\\N") { // last row must be empty string
-//            $csv_row = "";
-//        }
+
         $arr_csv[$k_row] = $csv_row;
     }
     $csv_content = implode(PHP_EOL, $arr_csv);
 
-//    $csv_content = preg_replace('/,([^,]+)\\\\,([^,]+),/', ',"$1,$2",', $csv_content);
-//    $csv_content = preg_replace('/,([^,]+)\\\\,([^,]+),/', ',"$1,$2",', $csv_content);
     file_put_contents($filename, $csv_content);
 
     /*
@@ -132,6 +128,7 @@ foreach ($list_filename as $filename) {
 //    $temp = explode("/", $filename);
 //    $filename = array_pop($temp);
 //    $pcmd = "psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"COPY {$table_name}{$table_suffix} FROM 's3://user-db/{$folder_s3}/{$filename}.gz' CREDENTIALS 'aws_access_key_id={$aws_access_key_id};aws_secret_access_key={$aws_secret_access_key}' DELIMITER ',' IGNOREHEADER 1 MAXERROR 100 ESCAPE GZIP ;\"";
+
     $pcmd = "psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"\\COPY {$table_name}{$table_suffix} FROM '$filename' DELIMITER ',' NULL '\\N' QUOTE '\\\"' CSV HEADER ;\"";
     $output = array();
     exec($pcmd, $output);
