@@ -102,7 +102,7 @@ foreach ($list_filename as $filename) {
         }
         foreach ($matches as $k=>$value) {
             if (strpos($value[1], "\\,") !== FALSE || strpos($value[1], "\"") !== FALSE) {
-                $value[1] = "\"".str_replace(["\\,", "\""], [",", "\\\""], $value[1])."\"";
+                $value[1] = "\"".str_replace(["\\,", "\""], [",", "\"\""], $value[1])."\"";
             }
             if ($value[1] == "") {
                 $value[1] = "\\N";
