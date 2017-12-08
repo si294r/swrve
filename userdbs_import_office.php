@@ -99,6 +99,8 @@ foreach ($list_filename as $filename) {
             $total_column = count($matches);
         } else {
             if (count($matches) < $total_column) {
+                echo $csv_row;
+                echo $arr_csv[$k_row + 1];
                 $previous_row = $csv_row;                
                 unset($arr_csv[$k_row]);
                 continue;
