@@ -85,7 +85,8 @@ foreach ($list_filename as $filename) {
         $matches = [];
         
         if ($previous_row != "") {
-            $csv_row = $previous_row ." ". $csv_row;
+            $csv_row = $previous_row . PHP_EOL . $csv_row;
+            $csv_row = str_replace(["\r","\n"], ["",""], $csv_row);
         }
         echo  $csv_row . PHP_EOL;
         preg_match_all($re, $csv_row, $matches, PREG_SET_ORDER, 0);
