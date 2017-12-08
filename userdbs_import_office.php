@@ -103,10 +103,10 @@ foreach ($list_filename as $filename) {
             continue;
         } else {
             if (count($matches) < $total_column) {
-                echo $csv_row;
-                echo $arr_csv[$k_row + 1];
-                echo PHP_EOL;
-                $previous_row = $csv_row;                
+//                echo $csv_row;
+//                echo $arr_csv[$k_row + 1];
+//                echo PHP_EOL;
+//                $previous_row = $csv_row;                
                 unset($arr_csv[$k_row]);
                 continue;
             } else {
