@@ -68,13 +68,34 @@ $text = "";
 foreach ($list_filename as $filename) {
     $table_name = get_table_name($filename);
 
+    /*
+     * Start Transform CSV from Standard Redshift to Standard Postgres
+     */
+    
     $csv_content = file_get_contents($filename);
     
     $arr_csv = explode(PHP_EOL, $csv_content);
     $re = '/(?<=^|,)(((?<=\\\\),|[^,|])*)(?:$|,)/';
+    $total_column = 0;
+    $previous_row = "";
     foreach ($arr_csv as $k_row=>$csv_row) {
         $matches = [];
+        
+        if ($previous_row != "") {
+            $csv_row = $previous_row ." ". $csv_row;
+        }
         preg_match_all($re, $csv_row, $matches, PREG_SET_ORDER, 0);
+        if ($k_row == 0) {
+            $total_column = count($matches);
+        } else {
+            if (count($matches) != $total_column) {
+                $previous_row = $csv_row;                
+                unset($arr_csv[$k_row]);
+                continue;
+            } else {
+                $previous_row = "";
+            }
+        }
         foreach ($matches as $k=>$value) {
             if (strpos($value[1], "\\,") !== FALSE || strpos($value[1], "\"") !== FALSE) {
                 $value[1] = "\"".str_replace(["\\,", "\""], [",", "\\\""], $value[1])."\"";
@@ -95,6 +116,10 @@ foreach ($list_filename as $filename) {
 //    $csv_content = preg_replace('/,([^,]+)\\\\,([^,]+),/', ',"$1,$2",', $csv_content);
 //    $csv_content = preg_replace('/,([^,]+)\\\\,([^,]+),/', ',"$1,$2",', $csv_content);
     file_put_contents($filename, $csv_content);
+
+    /*
+     * End Transform CSV from Standard Redshift to Standard Postgres
+     */
     
 //    $temp = explode("/", $filename);
 //    $filename = array_pop($temp);
