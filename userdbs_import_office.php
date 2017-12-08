@@ -80,7 +80,7 @@ foreach ($list_filename as $filename) {
     $arr_csv = explode(PHP_EOL, $csv_content);
     $re = '/(?<=^|,)(((?<=\\\\),|[^,|])*)(?:$|,)/';
     $total_column = 0;
-//    $previous_row = "";
+    $previous_row = "";
     $total_row = count($arr_csv);
     for ($k_row = 0; $k_row < $total_row; $k_row++) {
         $csv_row = $arr_csv[$k_row];
