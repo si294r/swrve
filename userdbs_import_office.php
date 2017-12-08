@@ -89,6 +89,7 @@ foreach ($list_filename as $filename) {
         if ($csv_row == "") continue; // last row
         
         $csv_row = str_replace("\r", "", $csv_row); // clean up carriage return
+        $csv_row = str_replace("\0", "", $csv_row); // clean up null char
         
         $matches = [];
         
