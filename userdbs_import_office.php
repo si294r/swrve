@@ -77,22 +77,22 @@ foreach ($list_filename as $filename) {
     $arr_csv = explode(PHP_EOL, $csv_content);
     $re = '/(?<=^|,)(((?<=\\\\),|[^,|])*)(?:$|,)/';
     $total_column = 0;
-    $previous_row = "";
+//    $previous_row = "";
     $total_row = count($arr_csv);
     for ($k_row = 0; $k_row < $total_row; $k_row++) {
         $csv_row = $arr_csv[$k_row];
 //    foreach ($arr_csv as $k_row=>$csv_row) {
         $matches = [];
         
-        if ($previous_row != "") {
-            $csv_row = $previous_row ." ". $csv_row;
-        }
-        echo  $csv_row . PHP_EOL;
+//        if ($previous_row != "") {
+//            $csv_row = $previous_row ." ". $csv_row;
+//        }
+//        echo  $csv_row . PHP_EOL;
         preg_match_all($re, $csv_row, $matches, PREG_SET_ORDER, 0);
         if ($k_row == 0) {
             $total_column = count($matches);
         } else {
-            if (count($matches) != $total_column) {
+            if (count($matches) < $total_column) {
                 $previous_row = $csv_row;                
                 unset($arr_csv[$k_row]);
                 continue;
