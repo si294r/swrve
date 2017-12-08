@@ -98,6 +98,13 @@ foreach ($list_filename as $filename) {
         }
 //        echo  $csv_row . PHP_EOL;
         preg_match_all($re, $csv_row, $matches, PREG_SET_ORDER, 0);
+        
+        if (strpos($csv_row, "7xXNCaJQGYBEA7bzi/8Hew==") !== FALSE) {
+            echo $csv_row.PHP_EOL;
+            echo count($matches).PHP_EOL;
+            echo $total_column.PHP_EOL;
+        }
+        
         if ($k_row == 0) {
             $total_column = count($matches);
             continue;
