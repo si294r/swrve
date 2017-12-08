@@ -78,7 +78,10 @@ foreach ($list_filename as $filename) {
     $re = '/(?<=^|,)(((?<=\\\\),|[^,|])*)(?:$|,)/';
     $total_column = 0;
     $previous_row = "";
-    foreach ($arr_csv as $k_row=>$csv_row) {
+    $total_row = count($arr_csv);
+    for ($k_row = 0; $k_row < $total_row; $k_row++) {
+        $csv_row = $arr_csv[$k_row];
+//    foreach ($arr_csv as $k_row=>$csv_row) {
         $matches = [];
         
         if ($previous_row != "") {
