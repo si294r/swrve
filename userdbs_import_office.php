@@ -86,6 +86,9 @@ foreach ($list_filename as $filename) {
     $total_row = count($arr_csv);
     for ($k_row = 0; $k_row < $total_row; $k_row++) {
         $csv_row = $arr_csv[$k_row];
+        
+        if ($csv_row == "") continue; // last row
+        
 //    foreach ($arr_csv as $k_row=>$csv_row) {
         $matches = [];
         
@@ -101,6 +104,7 @@ foreach ($list_filename as $filename) {
             if (count($matches) < $total_column) {
                 echo $csv_row;
                 echo $arr_csv[$k_row + 1];
+                echo PHP_EOL;
                 $previous_row = $csv_row;                
                 unset($arr_csv[$k_row]);
                 continue;
@@ -118,9 +122,9 @@ foreach ($list_filename as $filename) {
             $matches[$k] = $value[1];
         }
         $csv_row = implode(",", $matches);
-        if ($csv_row == "\\N") { // last row must be empty string
-            $csv_row = "";
-        }
+//        if ($csv_row == "\\N") { // last row must be empty string
+//            $csv_row = "";
+//        }
         $arr_csv[$k_row] = $csv_row;
     }
     $csv_content = implode(PHP_EOL, $arr_csv);
