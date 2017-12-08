@@ -82,42 +82,25 @@ foreach ($list_filename as $filename) {
     $arr_csv = explode(PHP_EOL, $csv_content);
     $re = '/(?<=^|,)(((?<=\\\\),|[^,|])*)(?:$|,)/';
     $total_column = 0;
-    $previous_row = "";
     $total_row = count($arr_csv);
     for ($k_row = 0; $k_row < $total_row; $k_row++) {
         $csv_row = $arr_csv[$k_row];
         
         if ($csv_row == "") continue; // last row
         
-//    foreach ($arr_csv as $k_row=>$csv_row) {
+        $csv_row = str_replace("\r", "", $csv_row); // clean up carriage return
+        
         $matches = [];
         
-        if ($previous_row != "") {
-            $csv_row = $previous_row . "" . $csv_row;
-//            $csv_row = str_replace(["\r","\n"], ["",""], $csv_row);
-        }
-//        echo  $csv_row . PHP_EOL;
         preg_match_all($re, $csv_row, $matches, PREG_SET_ORDER, 0);
-        
-        if (strpos($csv_row, "7xXNCaJQGYBEA7bzi/8Hew==") !== FALSE) {
-            echo $csv_row.PHP_EOL;
-            echo count($matches).PHP_EOL;
-            echo $total_column.PHP_EOL;
-        }
         
         if ($k_row == 0) {
             $total_column = count($matches);
             continue;
         } else {
             if (count($matches) < $total_column) {
-//                echo $csv_row;
-//                echo $arr_csv[$k_row + 1];
-//                echo PHP_EOL;
-//                $previous_row = $csv_row;                
                 unset($arr_csv[$k_row]);
                 continue;
-            } else {
-                $previous_row = "";
             }
         }
         foreach ($matches as $k=>$value) {
