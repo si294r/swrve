@@ -74,6 +74,9 @@ foreach ($list_filename as $filename) {
     
     $csv_content = file_get_contents($filename);
     
+    // normalize all end of line with EOF \n
+    $csv_content = str_replace("\r\n", "\n", $csv_content);
+    
     $arr_csv = explode(PHP_EOL, $csv_content);
     $re = '/(?<=^|,)(((?<=\\\\),|[^,|])*)(?:$|,)/';
     $total_column = 0;
@@ -86,7 +89,7 @@ foreach ($list_filename as $filename) {
         
         if ($previous_row != "") {
             $csv_row = $previous_row . PHP_EOL . $csv_row;
-            $csv_row = str_replace(["\r","\n"], ["",""], $csv_row);
+//            $csv_row = str_replace(["\r","\n"], ["",""], $csv_row);
         }
         echo  $csv_row . PHP_EOL;
         preg_match_all($re, $csv_row, $matches, PREG_SET_ORDER, 0);
