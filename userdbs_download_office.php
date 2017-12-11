@@ -6,6 +6,7 @@ include 'config.php';
 load_config();
 
 $current_dir = dirname(__FILE__);
+echo __FILE__;
 echo $current_dir;
 die;
 include "/home/alegrium/www/$file_key_php";
