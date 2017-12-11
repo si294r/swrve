@@ -5,6 +5,9 @@
 include 'config.php';
 load_config();
 
+$current_dir = dirname(__FILE__);
+echo $current_dir;
+die;
 include "/home/alegrium/www/$file_key_php";
 
 $url_userdbs_json = "https://dashboard.swrve.com/api/1/userdbs.json";
