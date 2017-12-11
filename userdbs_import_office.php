@@ -18,6 +18,9 @@ function get_table_name($filename) {
 }
 
 function get_list_filename() {
+    
+    global $current_dir;
+    
     exec("find $current_dir -path */{$GLOBALS['db_name']}-*.csv", $output); // find all csv
     asort($output);
     $output = array_values($output);
@@ -25,6 +28,9 @@ function get_list_filename() {
 }
 
 function get_file_psql() {
+
+    global $current_dir;
+
     exec("find $current_dir -path */{$GLOBALS['db_name']}-*redshift.sql", $output); // find all csv
     return $output[0];
 }
