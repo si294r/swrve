@@ -1,5 +1,7 @@
 <?php
 
+ini_set('memory_limit', '-1');
+
 (php_sapi_name() === "cli") OR exit("Script access is only allowed from command line");
 
 /*
