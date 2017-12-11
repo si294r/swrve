@@ -18,14 +18,14 @@ function get_table_name($filename) {
 }
 
 function get_list_filename() {
-    exec("find /home/alegrium/www/swrve -path */{$GLOBALS['db_name']}-*.csv", $output); // find all csv
+    exec("find $current_dir -path */{$GLOBALS['db_name']}-*.csv", $output); // find all csv
     asort($output);
     $output = array_values($output);
     return $output;
 }
 
 function get_file_psql() {
-    exec("find /home/alegrium/www/swrve -path */{$GLOBALS['db_name']}-*redshift.sql", $output); // find all csv
+    exec("find $current_dir -path */{$GLOBALS['db_name']}-*redshift.sql", $output); // find all csv
     return $output[0];
 }
 
@@ -35,7 +35,9 @@ function get_file_psql() {
 
 include 'config.php';
 
-include "/home/alegrium/www/postgres-config.php";
+$current_dir = dirname(__FILE__);
+
+include "$current_dir/../postgres-config.php";
 
 load_config();
 

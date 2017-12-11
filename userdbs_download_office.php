@@ -6,10 +6,8 @@ include 'config.php';
 load_config();
 
 $current_dir = dirname(__FILE__);
-echo __FILE__;
-echo $current_dir;
-die;
-include "/home/alegrium/www/$file_key_php";
+
+include "$current_dir/../$file_key_php";
 
 $url_userdbs_json = "https://dashboard.swrve.com/api/1/userdbs.json";
 
@@ -20,11 +18,11 @@ $json = json_decode($content);
 if (!is_object($json)) {
     goto getjson;
 } else {
-    exec("rm -r /home/alegrium/www/swrve/{$db_name}-*"); // cleanup old download
+    exec("rm -r $current_dir/{$db_name}-*"); // cleanup old download
 //    exec("aws s3 rm --recursive s3://user-db/office/$folder_s3");
 }
 
-$dir = "/home/alegrium/www/swrve/{$db_name}-" . $json->date;
+$dir = "$current_dir/{$db_name}-" . $json->date;
 if (!is_dir($dir)) {
     mkdir($dir);
 }
