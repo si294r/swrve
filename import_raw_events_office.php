@@ -77,6 +77,9 @@ from
 //    die;
     }
     
+    //cleanup
+    exec("rm $current_dir/*.log");
+    
     if ($obj_date->format('Y-m-d') == $enddate) {
         break;
     } else {
