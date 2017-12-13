@@ -73,6 +73,7 @@ $config['Cash_iOS']['db_name'] = "cash_userdbs_ios";
 $config['Cash_iOS']['file_key_php'] = "swrve_cash_ios_key.php";
 $config['Cash_iOS']['folder_s3'] = "cash_ios";
 $config['Cash_iOS']['table_suffix'] = "_cash_ios";
+$config['Cash_iOS']['swrve_app_id'] = "30088";
 
 $config['Billionaire2_iOS']['db_name'] = "billionaire2_userdbs_ios";
 $config['Billionaire2_iOS']['file_key_php'] = "swrve_billionaire2_ios_key.php";
@@ -83,7 +84,7 @@ $config['Cash_Android']['db_name'] = "cash_userdbs_oid";
 $config['Cash_Android']['file_key_php'] = "swrve_cash_oid_key.php";
 $config['Cash_Android']['folder_s3'] = "cash_oid";
 $config['Cash_Android']['table_suffix'] = "_cash_oid";
-$config['Cash_Android']['swrve_app_id'] = "30088";
+$config['Cash_Android']['swrve_app_id'] = "30262";
 
 $config['Wheels_iOS']['db_name'] = "wheels_userdbs_ios";
 $config['Wheels_iOS']['file_key_php'] = "swrve_wheels_ios_key.php";
