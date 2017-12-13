@@ -2,12 +2,16 @@
 
 function load_config() 
 {
-    global $argv, $db_name, $file_key_php, $folder_s3, $table_suffix, $email_subject, $config;
+    global $argv, $db_name, $file_key_php, $folder_s3, $table_suffix, $email_subject, $swrve_app_id, $config;
 
     $db_name      = $config[$argv[1]]['db_name'];
     $file_key_php = $config[$argv[1]]['file_key_php'];
     $folder_s3    = $config[$argv[1]]['folder_s3'];
     $table_suffix = $config[$argv[1]]['table_suffix'];
+    
+    if (isset($config[$argv[1]]['swrve_app_id'])) {
+        $swrve_app_id = $config[$argv[1]]['swrve_app_id'];
+    }
     
     $email_subject = "Swrve " . str_replace("_", " ", $argv[1]) . " Result Import";
 }
@@ -79,6 +83,7 @@ $config['Cash_Android']['db_name'] = "cash_userdbs_oid";
 $config['Cash_Android']['file_key_php'] = "swrve_cash_oid_key.php";
 $config['Cash_Android']['folder_s3'] = "cash_oid";
 $config['Cash_Android']['table_suffix'] = "_cash_oid";
+$config['Cash_Android']['swrve_app_id'] = "30088";
 
 $config['Wheels_iOS']['db_name'] = "wheels_userdbs_ios";
 $config['Wheels_iOS']['file_key_php'] = "swrve_wheels_ios_key.php";
