@@ -5,6 +5,8 @@
 include 'config.php';
 load_config();
 
+include "$current_dir/../postgres-config.php";
+
 if (isset($argv[2])) {
     $date = $argv[2];
 } else {
