@@ -35,8 +35,19 @@ foreach ($output as $row) {
         $filename = str_replace(".gz", "", "$current_dir/$filename");
         exec("psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"\\COPY temp_json FROM '$filename'; \"", $out_import);
         echo implode("\n", $out_import) . "\n\n";
-//        exec("psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"select * from $tableLogName where filename = '$filename';\"", $out_import);
-//        echo implode("\n", $out_import) . "\n\n";
+        exec("psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"insert into events_30088
+select values->>'app_version' as app_version,
+       values->>'type' as event_type,
+       cast(values->>'time' as bigint) as event_time,
+       cast(values->>'client_time' as bigint) as client_time,
+       values->>'user' as event_user,
+       values->>'parameters' as parameters,
+       values->>'payload' as payload
+from   
+(
+select values::json as values from   temp_json
+) a;\"", $out_import);
+        echo implode("\n", $out_import) . "\n\n";
     } else {
         echo "$filename found in $tableLogName".PHP_EOL;
     }
