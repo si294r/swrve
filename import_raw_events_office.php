@@ -29,7 +29,15 @@ foreach ($output as $row) {
         echo "$filename not found in $tableLogName".PHP_EOL;
         exec("aws s3 cp s3://swrveexternal-alegrium/app-$swrve_app_id/$filename $current_dir/$filename");
         exec("gunzip -f $current_dir/$filename");
+        
+        exec("psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \" TRUNCATE TABLE temp_json; \"", $out_import);
+        echo implode("\n", $out_import) . "\n\n";
+        exec("psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \" \\COPY temp_json FROM '$filename'; \"", $out_import);
+        echo implode("\n", $out_import) . "\n\n";
+//        exec("psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"select * from $tableLogName where filename = '$filename';\"", $out_import);
+//        echo implode("\n", $out_import) . "\n\n";
     } else {
         echo "$filename found in $tableLogName".PHP_EOL;
     }
+    die;
 }
