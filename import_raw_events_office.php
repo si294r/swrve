@@ -34,8 +34,8 @@ foreach ($output as $row) {
         echo "truncate...";
         exec("psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"TRUNCATE TABLE temp_json; \"", $out_import);
         echo "copy...";
-        $filename = str_replace(".gz", "", "$current_dir/$filename");
-        exec("psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"\\COPY temp_json FROM '$filename'; \"", $out_import);
+        $logfilename = str_replace(".gz", "", "$current_dir/$filename");
+        exec("psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"\\COPY temp_json FROM '$logfilename'; \"", $out_import);
         echo "insert...";
         exec("psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"
 insert into events_30088
@@ -52,6 +52,9 @@ from
 ) a;\"", $out_import);
         echo PHP_EOL.implode(PHP_EOL, $out_import) .PHP_EOL.PHP_EOL;
         $out_import = [];
+        
+        exec("psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"Insert into $tableLogName (filename, status) VALUES ('$filename', 'done');\"");
+        
     } else {
         echo "$filename found in $tableLogName".PHP_EOL;
     }
