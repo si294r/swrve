@@ -32,6 +32,7 @@ while (true) {
 
     $date = $obj_date->format('Y-m-d');
     
+    $output = [];
     exec("aws s3 ls s3://swrveexternal-alegrium/app-$swrve_app_id/$date", $output);
 
     foreach ($output as $row) {
@@ -48,6 +49,7 @@ while (true) {
         }
         $filename = trim($matches[0][0]);
         
+        $out_select = [];
         exec("psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"select * from $tableLogName where filename = '$filename';\"", $out_select);
 
         if (strpos(implode("\n", $out_select), "(0 rows)") !== false) {
@@ -56,6 +58,8 @@ while (true) {
             exec("aws s3 cp s3://swrveexternal-alegrium/app-$swrve_app_id/$filename $current_dir/$filename");
             echo "extract...";
             exec("gunzip -f $current_dir/$filename");
+            
+            $out_import = [];
             echo "truncate...";
             exec("psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"TRUNCATE TABLE temp_json; \"", $out_import);
             echo "copy...";
@@ -76,7 +80,6 @@ from
     select values::json as values from   temp_json
 ) a;\"", $out_import);
             echo PHP_EOL . implode(PHP_EOL, $out_import) . PHP_EOL . PHP_EOL;
-            $out_import = [];
 
             exec("psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"Insert into $tableLogName (filename, status) VALUES ('$filename', 'done');\"");
         } else {
