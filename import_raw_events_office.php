@@ -41,6 +41,7 @@ foreach ($output as $row) {
 //        echo "insert...";
         exec("psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"
 create temporary table temp_json (values text) on commit drop;
+
 \\COPY temp_json FROM '$filename';
     
 insert into events_30088
