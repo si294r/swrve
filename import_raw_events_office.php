@@ -5,6 +5,8 @@
 include 'config.php';
 load_config();
 
+$current_dir = dirname(__FILE__);
+
 include "$current_dir/../postgres-config.php";
 
 if (isset($argv[2])) {
