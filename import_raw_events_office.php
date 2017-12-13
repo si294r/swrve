@@ -42,6 +42,7 @@ while (true) {
         
         $re = '/ '.$date.'.*/';
         preg_match_all($re, $row, $matches, PREG_SET_ORDER, 0);
+        if (!isset($matches[0][0])) continue;
         $filename = trim($matches[0][0]);
         
         exec("psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"select * from $tableLogName where filename = '$filename';\"", $out_select);
