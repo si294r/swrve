@@ -31,19 +31,15 @@ foreach ($output as $row) {
         exec("aws s3 cp s3://swrveexternal-alegrium/app-$swrve_app_id/$filename $current_dir/$filename");
         echo "extract...";
         exec("gunzip -f $current_dir/$filename");
-//        echo "truncate...";
-//        exec("psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"TRUNCATE TABLE temp_json; \"", $out_import);
+        echo "truncate...";
+        exec("psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"TRUNCATE TABLE temp_json; \"", $out_import);
 //        echo implode("\n", $out_import) . "\n\n";
-//        echo "copy tempjson...";
+        echo "copy...";
         $filename = str_replace(".gz", "", "$current_dir/$filename");
-//        exec("psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"\\COPY temp_json FROM '$filename'; \"", $out_import);
+        exec("psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"\\COPY temp_json FROM '$filename'; \"", $out_import);
 //        echo implode("\n", $out_import) . "\n\n";
-//        echo "insert...";
+        echo "insert...";
         exec("psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"
-create temporary table temp_json (values text) on commit drop;
-
-\\COPY temp_json FROM '$filename';
-    
 insert into events_30088
 select values->>'app_version' as app_version,
        values->>'type' as event_type,
@@ -54,7 +50,7 @@ select values->>'app_version' as app_version,
        values->>'payload' as payload
 from   
 (
-select values::json as values from   temp_json
+    select values::json as values from   temp_json
 ) a;\"", $out_import);
         echo implode("\n", $out_import) . "\n\n";
 //        echo "done".PHP_EOL;
