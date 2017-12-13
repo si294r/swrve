@@ -35,11 +35,15 @@ while (true) {
     exec("aws s3 ls s3://swrveexternal-alegrium/app-$swrve_app_id/$date", $output);
 
     foreach ($output as $row) {
-        $arr = explode($date, $row);
+//        $arr = explode($date, $row);
 
         $tableName = "events_{$swrve_app_id}";
         $tableLogName = "events_{$swrve_app_id}_log";
-        $filename = $date . $arr[2];
+        
+        $re = '/ '.$date.'.*/';
+        preg_match_all($re, $row, $matches, PREG_SET_ORDER, 0);
+        $filename = trim($matches[0][0]);
+        
         exec("psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"select * from $tableLogName where filename = '$filename';\"", $out_select);
 
         if (strpos(implode("\n", $out_select), "(0 rows)") !== false) {
