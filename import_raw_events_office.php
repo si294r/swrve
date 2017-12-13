@@ -28,6 +28,7 @@ foreach ($output as $row) {
     if (strpos(implode("\n", $out_select), "(0 rows)") !== false) {
         echo "$filename not found in $tableLogName".PHP_EOL;
         exec("aws s3 cp s3://swrveexternal-alegrium/app-$swrve_app_id/$filename $current_dir/$filename");
+        exec("gunzip -f $current_dir/$filename");
     } else {
         echo "$filename found in $tableLogName".PHP_EOL;
     }
