@@ -68,7 +68,7 @@ while (true) {
             exec("psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"\\COPY $temp_json FROM '$logfilename'; \"", $out_import);
             echo "insert...";
             exec("psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"
-insert into events_30088
+insert into events_$swrve_app_id
 select values->>'app_version' as app_version,
        values->>'type' as event_type,
        cast(values->>'time' as bigint) as event_time,
