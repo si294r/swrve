@@ -29,6 +29,10 @@ if (isset($argv[2])) {
 $obj_date = DateTime::createFromFormat('Y-m-d', $startdate);
 $temp_json = "temp_json_".round(microtime(true) * 1000);
 
+if (!is_dir("$current_dir/$swrve_app_id")) {
+    mkdir("$current_dir/$swrve_app_id");
+}
+
 while (true) {
 
     $date = $obj_date->format('Y-m-d');
@@ -56,15 +60,15 @@ while (true) {
         if (strpos(implode("\n", $out_select), "(0 rows)") !== false) {
             echo "$filename not found in $tableLogName" . PHP_EOL;
             echo "downloading...";
-            exec("aws s3 cp s3://swrveexternal-alegrium/app-$swrve_app_id/$filename $current_dir/$filename");
+            exec("aws s3 cp s3://swrveexternal-alegrium/app-$swrve_app_id/$filename $current_dir/$swrve_app_id/$filename");
             echo "extract...";
-            exec("gunzip -f $current_dir/$filename");
+            exec("gunzip -f $current_dir/$swrve_app_id/$filename");
             
             $out_import = [];
             echo "create temp_json...";
             exec("psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"CREATE TABLE {$temp_json} (values text); \"", $out_import);
             echo "copy...";
-            $logfilename = str_replace(".gz", "", "$current_dir/$filename");
+            $logfilename = str_replace(".gz", "", "$current_dir/$swrve_app_id/$filename");
             exec("psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"\\COPY $temp_json FROM '$logfilename'; \"", $out_import);
             echo "insert...";
             exec("psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"
@@ -94,7 +98,7 @@ from
     }
     
     //cleanup
-    exec("rm $current_dir/*.log");
+    exec("rm $current_dir/$swrve_app_id/*.log");
     
     if ($obj_date->format('Y-m-d') == $enddate) {
         break;
