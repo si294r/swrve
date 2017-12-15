@@ -78,7 +78,7 @@ select values->>'app_version' as app_version,
        values->>'payload' as payload
 from   
 (
-    select values::json as values from $temp_json
+    select values::json as values from $temp_json where is_json(values)
 ) a;\"", $out_import);
             
             echo "drop temp_json...";
