@@ -27,6 +27,7 @@ if (isset($argv[2])) {
 }
 
 $obj_date = DateTime::createFromFormat('Y-m-d', $startdate);
+$temp_json = "temp_json_".round(microtime(true) * 1000);
 
 while (true) {
 
@@ -60,11 +61,11 @@ while (true) {
             exec("gunzip -f $current_dir/$filename");
             
             $out_import = [];
-            echo "truncate...";
-            exec("psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"TRUNCATE TABLE temp_json; \"", $out_import);
+            echo "create temp_json...";
+            exec("psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"CREATE TABLE {$temp_json} (values text); \"", $out_import);
             echo "copy...";
             $logfilename = str_replace(".gz", "", "$current_dir/$filename");
-            exec("psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"\\COPY temp_json FROM '$logfilename'; \"", $out_import);
+            exec("psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"\\COPY $temp_json FROM '$logfilename'; \"", $out_import);
             echo "insert...";
             exec("psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"
 insert into events_30088
@@ -77,8 +78,12 @@ select values->>'app_version' as app_version,
        values->>'payload' as payload
 from   
 (
-    select values::json as values from   temp_json
+    select values::json as values from $temp_json
 ) a;\"", $out_import);
+            
+            echo "drop temp_json...";
+            $pcmd = "psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"DROP TABLE IF EXISTS $temp_json;\"";
+            exec($pcmd, $out_import);
             echo PHP_EOL . implode(PHP_EOL, $out_import) . PHP_EOL . PHP_EOL;
 
             exec("psql --host=$rhost --port=$rport --username=$ruser --no-password --echo-all $rdatabase  -c \"Insert into $tableLogName (filename, status) VALUES ('$filename', 'done');\"");
